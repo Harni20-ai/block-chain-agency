@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_standard" name="shell-type"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}
+  /* Fix opacity modifier backgrounds that were defaulting to light grey/white */
+  html.dark .bg-surface-container-lowest\/80 { background-color: rgba(44, 20, 36, 0.85) !important; box-shadow: 0 12px 40px rgba(0,0,0,0.5) !important; }
+  html.dark .bg-surface-container\/10 { background-color: rgba(44, 26, 38, 0.1) !important; }
+  html.dark .bg-surface-container\/5 { background-color: rgba(44, 26, 38, 0.05) !important; }
+  html.dark .bg-surface-container-low\/10 { background-color: rgba(34, 21, 29, 0.1) !important; }
+  html.dark .bg-surface\/90 { background-color: rgba(26, 16, 22, 0.9) !important; }
+  html.dark .bg-surface\/80 { background-color: rgba(26, 16, 22, 0.85) !important; }
+
+  /* Fix Fixed Color Badges (bg-primary-fixed, etc.) in Dark Mode */
+  html.dark .bg-primary-fixed { background-color: rgba(224, 64, 160, 0.15) !important; }
+  html.dark .text-on-primary-fixed { color: #ffb3e6 !important; }
+  
+  html.dark .bg-secondary-fixed { background-color: rgba(124, 82, 170, 0.15) !important; }
+  html.dark .text-on-secondary-fixed { color: #d3a8ff !important; }
+  
+  html.dark .bg-tertiary-fixed { background-color: rgba(82, 160, 190, 0.15) !important; }
+  html.dark .text-on-tertiary-fixed { color: #80d0f0 !important; }
+</style>
+
+<script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = {"darkMode":"class","theme":{"extend":{"colors":{"surface-container-lowest":"#ffffff","primary":"#e040a0","secondary":"#7c52aa","on-surface-variant":"#604868","on-tertiary":"#ffffff","surface-variant":"#f2e8f2","on-primary-fixed-variant":"#a02070","primary-container":"#f080c0","inverse-surface":"#2e1a28","on-background":"#2e1a28","on-error-container":"#9b1c1c","on-secondary-container":"#2e2040","on-secondary-fixed":"#1a1030","error-container":"#ffe8e8","surface-tint":"#e040a0","background":"#fef7ff","surface-container":"#f8eef8","surface-dim":"#e0d6e0","surface":"#fef7ff","tertiary-fixed":"#c8eaff","inverse-primary":"#f0a0cc","outline":"#907898","surface-container-highest":"#ece2ec","surface-container-high":"#f2e8f2","on-secondary":"#ffffff","tertiary-fixed-dim":"#80d0f0","secondary-fixed":"#eedcff","outline-variant":"#dcc8e0","on-primary":"#ffffff","on-secondary-fixed-variant":"#4a3068","on-tertiary-container":"#00334d","tertiary":"#0096cc","tertiary-container":"#40c0ee","surface-container-low":"#fbf2fb","on-tertiary-fixed":"#001a33","on-tertiary-fixed-variant":"#005580","primary-fixed":"#ffd6ee","primary-fixed-dim":"#f0a0cc","on-primary-fixed":"#3d0028","surface-bright":"#fef7ff","secondary-fixed-dim":"#c8a8e8","on-error":"#ffffff","on-primary-container":"#2e1a28","secondary-container":"#eedcff","error":"#e53e3e","inverse-on-surface":"#fef7ff","on-surface":"#2e1a28"},"borderRadius":{"DEFAULT":"1rem","lg":"2rem","xl":"3rem","full":"9999px"},"spacing":{},"fontFamily":{"headline":["DM Sans"],"display":["DM Sans"],"body":["DM Sans"],"label":["DM Sans"]}}}};</script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<style id="dark-mode-styles">
+  /* Base Backgrounds */
+  html.dark body, html.dark main, html.dark section, html.dark .bg-surface { background-color: #1a1016 !important; color: #ffffff !important; }
+  
+  /* Flatten Tailwind Gradients in Dark Mode so they don't use light mode hex colors */
+  html.dark .bg-gradient-to-b, 
+  html.dark .bg-gradient-to-br, 
+  html.dark .bg-gradient-to-tr, 
+  html.dark .bg-gradient-to-t,
+  html.dark .bg-gradient-to-r,
+  html.dark .bg-gradient-to-l { 
+      background-image: none !important; 
+      background-color: transparent !important;
+  }
+  
+  /* Surface Containers */
+  html.dark .bg-surface-container-lowest { background-color: #120a10 !important; }
+  html.dark .bg-surface-container-low { background-color: #22151d !important; }
+  html.dark .bg-surface-container { background-color: #2c1a26 !important; }
+  html.dark .bg-surface-container-high { background-color: #382030 !important; }
+  html.dark .bg-surface-container-highest { background-color: #45283a !important; }
+  
+  /* Text Colors */
+  html.dark .text-on-surface { color: #ffffff !important; }
+  html.dark .text-on-surface-variant { color: #d4a9c5 !important; }
+  html.dark .text-primary { color: #ffb3e6 !important; } /* Brighter pink for dark mode contrast */
+  html.dark .text-secondary { color: #d3a8ff !important; } /* Brighter purple */
+  html.dark .text-tertiary { color: #80d0f0 !important; } /* Brighter blue */
+  html.dark .text-outline { color: #aa7799 !important; }
+  
+  /* Borders */
+  html.dark .border-outline-variant { border-color: #553548 !important; }
+  html.dark .border-outline { border-color: #aa7799 !important; }
+  
+  /* Header */
+  html.dark header { background-color: rgba(26, 16, 22, 0.85) !important; }
+  
+  /* Specific Fixes */
+  html.dark .bg-primary-container { background-color: #59003b !important; color: #ffd6ee !important; }
+  html.dark .text-on-primary-container { color: #ffd6ee !important; }
+  
+  html.dark .group-hover\:bg-surface-container-high:hover { background-color: #382030 !important; }
+  html.dark .hover\:bg-surface-container-high:hover { background-color: #382030 !important; }
+  
+  /* Ensure spans inside headings inherit colors properly */
+  html.dark h1 span.text-primary, html.dark h2 span.text-primary { color: #ffb3e6 !important; }
+
+  /* Fix opacity modifier backgrounds that were defaulting to light grey/white */
+  html.dark .bg-surface-container-lowest\/80 { background-color: rgba(44, 20, 36, 0.85) !important; box-shadow: 0 12px 40px rgba(0,0,0,0.5) !important; }
+  html.dark .bg-surface-container\/10 { background-color: rgba(44, 26, 38, 0.1) !important; }
+  html.dark .bg-surface-container\/5 { background-color: rgba(44, 26, 38, 0.05) !important; }
+  html.dark .bg-surface-container-low\/10 { background-color: rgba(34, 21, 29, 0.1) !important; }
+  html.dark .bg-surface\/90 { background-color: rgba(26, 16, 22, 0.9) !important; }
+  html.dark .bg-surface\/80 { background-color: rgba(26, 16, 22, 0.85) !important; }
+
+  /* Fix Fixed Color Badges (bg-primary-fixed, etc.) in Dark Mode */
+  html.dark .bg-primary-fixed { background-color: rgba(224, 64, 160, 0.15) !important; }
+  html.dark .text-on-primary-fixed { color: #ffb3e6 !important; }
+  
+  html.dark .bg-secondary-fixed { background-color: rgba(124, 82, 170, 0.15) !important; }
+  html.dark .text-on-secondary-fixed { color: #d3a8ff !important; }
+  
+  html.dark .bg-tertiary-fixed { background-color: rgba(82, 160, 190, 0.15) !important; }
+  html.dark .text-on-tertiary-fixed { color: #80d0f0 !important; }
+</style>
+
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%20100%20100%27%3E%0A%20%20%3Ccircle%20cx%3D%2750%27%20cy%3D%2750%27%20r%3D%2750%27%20fill%3D%27%23e040a0%27/%3E%0A%20%20%0A%20%20%3C%21--%20Connecting%20lines%20drawn%20first%20so%20they%20sit%20under%20the%20circles%20--%3E%0A%20%20%3Cg%20stroke%3D%27%23ffffff%27%20stroke-width%3D%276%27%20stroke-linecap%3D%27round%27%3E%0A%20%20%20%20%3Cline%20x1%3D%2750%27%20y1%3D%2750%27%20x2%3D%2750%27%20y2%3D%2725%27/%3E%0A%20%20%20%20%3Cg%20transform%3D%27rotate%2872%2050%2050%29%27%3E%3Cline%20x1%3D%2750%27%20y1%3D%2750%27%20x2%3D%2750%27%20y2%3D%2725%27/%3E%3C/g%3E%0A%20%20%20%20%3Cg%20transform%3D%27rotate%28144%2050%2050%29%27%3E%3Cline%20x1%3D%2750%27%20y1%3D%2750%27%20x2%3D%2750%27%20y2%3D%2725%27/%3E%3C/g%3E%0A%20%20%20%20%3Cg%20transform%3D%27rotate%28216%2050%2050%29%27%3E%3Cline%20x1%3D%2750%27%20y1%3D%2750%27%20x2%3D%2750%27%20y2%3D%2725%27/%3E%3C/g%3E%0A%20%20%20%20%3Cg%20transform%3D%27rotate%28288%2050%2050%29%27%3E%3Cline%20x1%3D%2750%27%20y1%3D%2750%27%20x2%3D%2750%27%20y2%3D%2725%27/%3E%3C/g%3E%0A%20%20%3C/g%3E%0A%20%20%0A%20%20%3C%21--%20Hollow%20rings%20drawn%20on%20top%20%28filled%20with%20background%20color%20so%20lines%20don%27t%20show%20inside%29%20--%3E%0A%20%20%3Cg%20stroke%3D%27%23ffffff%27%20stroke-width%3D%275%27%20fill%3D%27%23e040a0%27%3E%0A%20%20%20%20%3Ccircle%20cx%3D%2750%27%20cy%3D%2750%27%20r%3D%278%27/%3E%0A%20%20%20%20%3Ccircle%20cx%3D%2750%27%20cy%3D%2725%27%20r%3D%277%27/%3E%0A%20%20%20%20%3Cg%20transform%3D%27rotate%2872%2050%2050%29%27%3E%3Ccircle%20cx%3D%2750%27%20cy%3D%2725%27%20r%3D%277%27/%3E%3C/g%3E%0A%20%20%20%20%3Cg%20transform%3D%27rotate%28144%2050%2050%29%27%3E%3Ccircle%20cx%3D%2750%27%20cy%3D%2725%27%20r%3D%277%27/%3E%3C/g%3E%0A%20%20%20%20%3Cg%20transform%3D%27rotate%28216%2050%2050%29%27%3E%3Ccircle%20cx%3D%2750%27%20cy%3D%2725%27%20r%3D%277%27/%3E%3C/g%3E%0A%20%20%20%20%3Cg%20transform%3D%27rotate%28288%2050%2050%29%27%3E%3Ccircle%20cx%3D%2750%27%20cy%3D%2725%27%20r%3D%277%27/%3E%3C/g%3E%0A%20%20%3C/g%3E%0A%3C/svg%3E"><circle cx='50' cy='50' r='50' fill='%23e040a0'/><text y='75' x='50' font-size='70' text-anchor='middle' fill='%23ffffff' font-family='sans-serif'>⚇</text></svg>">
+<title>ChainMind Labs</title>
+</head><body class="bg-surface font-body text-on-surface"><header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-20 max-w-7xl mx-auto px-6 lg:px-12 flex items-center justify-between"><a href="index.html" class="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity"><div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center shadow-[0_4px_16px_rgba(224,64,160,0.2)]"><span class="material-symbols-outlined text-on-primary text-[20px]">hub</span></div><span class="text-xl font-headline font-bold tracking-tight text-on-surface">CHAINMIND LABS</span></a><nav class="hidden lg:flex items-center gap-2" data-active-classes="bg-primary-container text-on-primary-container font-bold rounded-full px-4 py-2"><div class="relative group">
+    <button class="text-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high px-4 py-2 rounded-full transition-all flex items-center gap-1">Home <span class="material-symbols-outlined text-[16px]">expand_more</span></button>
+    <div class="absolute left-1/2 -translate-x-1/2 top-full mt-2 w-40 bg-surface border border-outline-variant rounded-xl shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all flex flex-col overflow-hidden">
+        <a class="px-4 py-3 text-sm text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface text-center" data-path="home-engineering-authority" href="index.html">Home 1</a>
+        <a class="px-4 py-3 text-sm text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface text-center" data-path="home-web3-studio" href="home2.html">Home 2</a>
+    </div>
+</div><a class="text-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high px-4 py-2 rounded-full transition-all" data-path="services" href="#">Services</a><a aria-current="page" class="transition-all bg-primary-container text-on-primary-container font-bold rounded-full px-4 py-2" data-path="portfolio" href="#">Portfolio</a><a class="text-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high px-4 py-2 rounded-full transition-all" data-path="technologies" href="#">Technologies</a><a class="text-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high px-4 py-2 rounded-full transition-all" data-path="contact" href="#">Contact</a></nav><div class="flex items-center gap-4"><button class="w-10 h-10 rounded-full bg-surface-container-low hover:bg-surface-container-high flex items-center justify-center text-on-surface-variant hover:text-on-surface transition-all"><span class="material-symbols-outlined text-[20px]">globe</span></button><button class="w-10 h-10 rounded-full bg-surface-container-low hover:bg-surface-container-high flex items-center justify-center text-on-surface-variant hover:text-on-surface transition-all"><span class="material-symbols-outlined text-[20px]">light_mode</span></button><a class="hidden sm:inline-flex items-center justify-center px-6 py-3 rounded-full bg-primary text-on-primary font-bold shadow-[0_4px_16px_rgba(224,64,160,0.2)] hover:scale-103 transition-transform text-sm" data-path="contact" href="#">Start a Project</a><div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="w-full bg-surface"><div class="flex flex-col w-full">
+<!-- Section 1 — Cinematic Dark-Mode Banner Hero -->
+<section class="relative w-full lg: overflow-hidden bg-inverse-surface text-inverse-on-surface pt-24 pb-16">
+<div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/30 via-inverse-surface to-inverse-surface pointer-events-none"></div>
+<div class="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-primary/25 blur-3xl pointer-events-none"></div>
+<div class="absolute bottom-0 -right-32 w-96 h-96 rounded-full bg-tertiary/20 blur-3xl pointer-events-none"></div>
+<div class="max-w-7xl mx-auto px-6 lg:px-12 relative z-10 flex flex-col gap-16">
+<!-- Split Intro Header -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+<div class="flex flex-col gap-6 max-w-3xl">
+<div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/20 text-primary-fixed border border-primary/30 text-xs font-headline font-bold uppercase tracking-wider w-fit">
+<span class="material-symbols-outlined text-[16px]">verified</span>
+          Engineering Authority
+        </div>
+<h1 class="text-4xl sm:text-6xl lg:text-7xl font-headline font-extrabold text-inverse-on-surface tracking-tight leading-[1.1]">
+          Blockchain Products We've <span class="text-primary-container">Engineered</span>
+</h1>
+<p class="text-lg sm:text-xl text-outline-variant leading-relaxed">
+          Explore our portfolio of high-performance decentralized applications, automated DeFi protocols, enterprise-grade NFT marketplaces, and scalable Web3 platforms built with rigorous precision.
+        </p>
+<div class="flex flex-col sm:flex-row items-center gap-4 shrink-0 pt-4">
+<a class="w-full sm:w-auto px-8 py-4 rounded-full bg-primary text-on-primary font-headline font-bold shadow-[0_4px_20px_rgba(224,64,160,0.4)] hover:scale-103 transition-transform flex items-center justify-center gap-2" href="#gallery">
+            Explore Portfolio
+            <span class="material-symbols-outlined text-[18px]">arrow_downward</span>
+</a>
+<a class="w-full sm:w-auto px-8 py-4 rounded-full bg-surface-container/10 border border-outline/30 text-inverse-on-surface font-headline font-bold hover:bg-surface-container/20 transition-colors text-center" data-path="contact" href="#">
+            Request Architecture Audit
+          </a>
+</div>
+</div>
+<div class="relative w-full h-[300px] sm:h-[400px] lg:h-[500px] rounded-3xl overflow-hidden shadow-2xl group border border-outline/20">
+    <img src="hero_image.jpg" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Web3 Portfolio Visualization" />
+    <div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest/80 to-transparent pointer-events-none mix-blend-overlay"></div>
+</div>
+</div>
+<!-- Prominent Metric Counters -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-6 p-8 rounded-3xl bg-surface-container/5 border border-outline/20 backdrop-blur-xl">
+<div class="flex flex-col gap-1">
+<span class="text-xs text-outline-variant font-bold uppercase tracking-wider">Total Volume Secured</span>
+<span class="text-3xl sm:text-4xl font-headline font-extrabold text-primary-container">$4.8B+</span>
+</div>
+<div class="flex flex-col gap-1">
+<span class="text-xs text-outline-variant font-bold uppercase tracking-wider">Contracts Audited</span>
+<span class="text-3xl sm:text-4xl font-headline font-extrabold text-tertiary-fixed-dim">250+</span>
+</div>
+<div class="flex flex-col gap-1">
+<span class="text-xs text-outline-variant font-bold uppercase tracking-wider">Average Gas Savings</span>
+<span class="text-3xl sm:text-4xl font-headline font-extrabold text-secondary-fixed">38%</span>
+</div>
+<div class="flex flex-col gap-1">
+<span class="text-xs text-outline-variant font-bold uppercase tracking-wider">Mainnet Protocols</span>
+<span class="text-3xl sm:text-4xl font-headline font-extrabold text-inverse-on-surface">42</span>
+</div>
+</div>
+<!-- Marquee-style Scrolling Preview -->
+<div class="relative w-full overflow-hidden py-4">
+<div class="flex gap-6 animate-none overflow-x-auto no-scrollbar pb-2">
+<div class="min-w-[320px] sm:min-w-[400px] h-[220px] rounded-2xl overflow-hidden relative group shadow-2xl bg-surface-container flex-shrink-0 border border-outline/20">
+<div class="absolute inset-0 bg-cover bg-center opacity-80" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCDlynoGeY44ToB5lixtVLfb0p0JIOy1vPbNb15UvS8lNGPeDtQLlKI-5FkGQFLQYDT_P9mlbDUU8Ja_ZdMjQVnNLFPU6kPIozLFNY4wWcHEwklOjnQDMoHLkGTqCf4WxrQj6NkZT0xUPltWJe37i3II2JTK-noNF_tSdafBOr2dg8_JKQBZuGNFE322m09z2m99nwQy-BaYcvlhEuspUwl6adMN6C9dV2l3l5Cq-ZrzicQAIDlFT8d')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-inverse-surface via-inverse-surface/40 to-transparent flex flex-col justify-end p-6">
+<span class="text-xs text-primary-container font-bold">Featured Case Study</span>
+<span class="text-lg font-headline font-bold text-inverse-on-surface">Omnichain Liquidity Router v2</span>
+</div>
+</div>
+<div class="min-w-[320px] sm:min-w-[400px] h-[220px] rounded-2xl overflow-hidden relative group shadow-2xl bg-surface-container flex-shrink-0 border border-outline/20">
+<div class="absolute inset-0 bg-cover bg-center opacity-80" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAKX1IFiuZACXPWydZ3RERw1TEdg12gwv9PAJdbPP8d0B0NUXeomVjisqvnFT9umsn0QGAWe4BnEXXkxnxpnqYMMg34MuRWIXTnZALrMAIzfK3bj2Q9G6AeodYfntY6SzZ2N0UwN1KpKFQ9ncL8w0z7lZzHnGgjVpnYyvmvPS97zATPGJ4IHuWys1I5mZoWB5zW7Q4oXsFqu5q5kjtg0bo7e85L7UxvgFSUu1K9K1-dDarwntzFILQw')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-inverse-surface via-inverse-surface/40 to-transparent flex flex-col justify-end p-6">
+<span class="text-xs text-tertiary-fixed-dim font-bold">Deep Dive</span>
+<span class="text-lg font-headline font-bold text-inverse-on-surface">EtherStream DeFi Suite</span>
+</div>
+</div>
+<div class="min-w-[320px] sm:min-w-[400px] h-[220px] rounded-2xl overflow-hidden relative group shadow-2xl bg-surface-container flex-shrink-0 border border-outline/20">
+<div class="absolute inset-0 bg-cover bg-center opacity-80" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDD-TMUTgVt9Yrghhn-MD5XuglkMuFYnPFUcQtYV_scwbqpOGtO4lc0e0keTo9eHBDyz0fDMzveV1mRwxBwuk6FERaQNwHPZ4d-AXVK1uFI9G0WKMvOSl2KDNsBzzQncafp3cl3epxKwt87L2anJtPFDM4qY9VQDEqKTT43qWbK1ORatXY7bSq5ofC7Cw0MgOzjlCxNMyehw5dDWjjsdFWf3lr1rLxsGX84Tlxgl9XMi0SlnSi5-5eL')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-inverse-surface via-inverse-surface/40 to-transparent flex flex-col justify-end p-6">
+<span class="text-xs text-primary-container font-bold">Algorithmic Money Market</span>
+<span class="text-lg font-headline font-bold text-inverse-on-surface">Vortex Lending Protocol</span>
+</div>
+</div>
+<div class="min-w-[320px] sm:min-w-[400px] h-[220px] rounded-2xl overflow-hidden relative group shadow-2xl bg-surface-container flex-shrink-0 border border-outline/20">
+<div class="absolute inset-0 bg-cover bg-center opacity-80" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA6PIrm2DtH-UaghdUlgIlhOVKtvraIubEW2wSI0SnzVx_JTQ-KkYJ4o4-W0ruuNWWhtuUnbIRPQZsHZREs3rOwaRYXzRSCLh09Tum3VYEyDOSlnW4UcyJrR1joJ6p3C0eqojtQ98AzGZznH1kM7_CrvHqDq_rH_RtAZb-C9KRm1iIyOtokDqct33pt6ZGo0-HaLCXEhaIUVkdqSBKYuMM7RNK9na31zudc2dkclf6N4WD7nFZo_pXB')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-inverse-surface via-inverse-surface/40 to-transparent flex flex-col justify-end p-6">
+<span class="text-xs text-secondary-fixed font-bold">NFT Marketplace</span>
+<span class="text-lg font-headline font-bold text-inverse-on-surface">Aura Prime Marketplace</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 2 — Featured Project -->
+<section class="w-full py-24 bg-surface-container-low">
+<div class="max-w-7xl mx-auto px-6 lg:px-12 flex flex-col gap-16">
+<div class="flex flex-col gap-3">
+<span class="text-secondary font-headline font-bold text-sm uppercase tracking-wider">Deep Dive Case Study</span>
+<h2 class="text-3xl sm:text-5xl font-headline font-extrabold text-on-surface tracking-tight">
+          Architectural Masterpiece: EtherStream
+        </h2>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+<!-- Asymmetric Visual Side -->
+<div class="lg:col-span-7 flex flex-col gap-6">
+<div class="w-full rounded-2xl overflow-hidden shadow-[0_16px_40px_rgba(0,150,204,0.15)] bg-surface-container relative group">
+<div class="w-full h-[350px] sm:h-[450px] bg-cover bg-center group-hover:scale-102 transition-transform duration-500" data-alt="A sleek interactive preview of the EtherStream decentralized finance dashboard showing high-frequency liquidity pools, dynamic yield curves in hot pink and sky blue, and real-time gas optimization graphs." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAKX1IFiuZACXPWydZ3RERw1TEdg12gwv9PAJdbPP8d0B0NUXeomVjisqvnFT9umsn0QGAWe4BnEXXkxnxpnqYMMg34MuRWIXTnZALrMAIzfK3bj2Q9G6AeodYfntY6SzZ2N0UwN1KpKFQ9ncL8w0z7lZzHnGgjVpnYyvmvPS97zATPGJ4IHuWys1I5mZoWB5zW7Q4oXsFqu5q5kjtg0bo7e85L7UxvgFSUu1K9K1-dDarwntzFILQw')"></div>
+<div class="absolute top-6 left-6 flex gap-2">
+<span class="px-4 py-1.5 rounded-full bg-surface/90 text-on-surface text-xs font-bold backdrop-blur-md">DeFi</span>
+<span class="px-4 py-1.5 rounded-full bg-tertiary text-on-tertiary text-xs font-bold backdrop-blur-md">Arbitrum L2</span>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-4">
+<div class="p-6 rounded-2xl bg-surface shadow-[0_4px_20px_rgba(0,0,0,0.03)] flex flex-col gap-1">
+<span class="text-xs text-on-surface-variant font-bold uppercase">Total Volume</span>
+<span class="text-2xl sm:text-3xl font-headline font-extrabold text-primary">$1.4B+</span>
+</div>
+<div class="p-6 rounded-2xl bg-surface shadow-[0_4px_20px_rgba(0,0,0,0.03)] flex flex-col gap-1">
+<span class="text-xs text-on-surface-variant font-bold uppercase">Gas Saved</span>
+<span class="text-2xl sm:text-3xl font-headline font-extrabold text-secondary">42%</span>
+</div>
+<div class="p-6 rounded-2xl bg-surface shadow-[0_4px_20px_rgba(0,0,0,0.03)] flex flex-col gap-1">
+<span class="text-xs text-on-surface-variant font-bold uppercase">Audit Score</span>
+<span class="text-2xl sm:text-3xl font-headline font-extrabold text-tertiary">99.8</span>
+</div>
+</div>
+</div>
+<!-- Content Side -->
+<div class="lg:col-span-5 flex flex-col justify-between gap-8 p-8 sm:p-10 rounded-2xl bg-surface shadow-[0_12px_40px_rgba(0,0,0,0.04)]">
+<div class="flex flex-col gap-6">
+<div class="flex flex-col gap-2">
+<span class="text-xs font-headline font-bold text-secondary uppercase tracking-widest">Challenge</span>
+<p class="text-on-surface-variant leading-relaxed">
+                High slippage and fragmented liquidity across cross-chain bridges led to suboptimal routing for institutional market makers operating on multi-chain assets.
+              </p>
+</div>
+<div class="flex flex-col gap-2">
+<span class="text-xs font-headline font-bold text-primary uppercase tracking-widest">Solution</span>
+<p class="text-on-surface-variant leading-relaxed">
+                Engineered a custom zero-knowledge state proof router combined with automated market maker (AMM) hooks that execute atomic swaps across 5 major L1/L2 networks in a single transaction block.
+              </p>
+</div>
+<div class="flex flex-col gap-3">
+<span class="text-xs font-headline font-bold text-tertiary uppercase tracking-widest">Core Technologies</span>
+<div class="flex flex-wrap gap-2">
+<span class="px-4 py-1.5 rounded-full bg-primary-fixed text-on-primary-fixed text-xs font-bold">Solidity 0.8.24</span>
+<span class="px-4 py-1.5 rounded-full bg-secondary-fixed text-on-secondary-fixed text-xs font-bold">Rust / ZK-SNARKs</span>
+<span class="px-4 py-1.5 rounded-full bg-tertiary-fixed text-on-tertiary-fixed text-xs font-bold">Next.js 14</span>
+<span class="px-4 py-1.5 rounded-full bg-surface-container-high text-on-surface text-xs font-bold">Ethers.js</span>
+</div>
+</div>
+</div>
+<a class="w-full py-4 rounded-full bg-primary text-on-primary font-headline font-bold text-center shadow-[0_4px_16px_rgba(224,64,160,0.2)] hover:scale-103 transition-transform" href="#">
+            Read Full Case Study
+          </a>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 3 — Project Gallery -->
+<section class="w-full py-24 bg-surface" id="gallery">
+<div class="max-w-7xl mx-auto px-6 lg:px-12 flex flex-col gap-12">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div class="flex flex-col gap-3">
+<span class="text-primary font-headline font-bold text-sm uppercase tracking-wider">Curated Index</span>
+<h2 class="text-3xl sm:text-5xl font-headline font-extrabold text-on-surface tracking-tight">
+            Complete Project Gallery
+          </h2>
+</div>
+<!-- Filter Pills -->
+<div class="flex flex-wrap items-center gap-2" id="portfolio-filters">
+<button class="px-6 py-2.5 rounded-full bg-primary text-on-primary text-sm font-bold shadow-[0_2px_10px_rgba(224,64,160,0.2)] transition-all" data-filter="all">All</button>
+<button class="px-6 py-2.5 rounded-full bg-surface-container-high text-on-surface hover:bg-surface-container-highest text-sm font-bold transition-all" data-filter="defi">DeFi</button>
+<button class="px-6 py-2.5 rounded-full bg-surface-container-high text-on-surface hover:bg-surface-container-highest text-sm font-bold transition-all" data-filter="dapps">dApps</button>
+<button class="px-6 py-2.5 rounded-full bg-surface-container-high text-on-surface hover:bg-surface-container-highest text-sm font-bold transition-all" data-filter="nft">NFT</button>
+<button class="px-6 py-2.5 rounded-full bg-surface-container-high text-on-surface hover:bg-surface-container-highest text-sm font-bold transition-all" data-filter="enterprise">Enterprise</button>
+<button class="px-6 py-2.5 rounded-full bg-surface-container-high text-on-surface hover:bg-surface-container-highest text-sm font-bold transition-all" data-filter="web3">Web3 Platforms</button>
+</div>
+</div>
+<!-- Masonry / Varied Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="portfolio-grid">
+<!-- Project Card 1 -->
+<div class="portfolio-card flex flex-col rounded-2xl bg-surface-container-low overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_16px_40px_rgba(224,64,160,0.12)] transition-all duration-300 group" data-category="defi">
+<div class="relative overflow-hidden h-64">
+<div class="w-full h-full bg-cover bg-center group-hover:scale-105 transition-transform duration-500" data-alt="A clean, pastel pink and purple interface preview of a decentralized lending protocol dashboard showing collateral ratios, borrow APY metrics, and health factor gauges." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDD-TMUTgVt9Yrghhn-MD5XuglkMuFYnPFUcQtYV_scwbqpOGtO4lc0e0keTo9eHBDyz0fDMzveV1mRwxBwuk6FERaQNwHPZ4d-AXVK1uFI9G0WKMvOSl2KDNsBzzQncafp3cl3epxKwt87L2anJtPFDM4qY9VQDEqKTT43qWbK1ORatXY7bSq5ofC7Cw0MgOzjlCxNMyehw5dDWjjsdFWf3lr1rLxsGX84Tlxgl9XMi0SlnSi5-5eL')"></div>
+<div class="absolute top-4 left-4"><span class="px-3.5 py-1 rounded-full bg-primary-fixed text-on-primary-fixed text-xs font-bold">DeFi</span></div>
+</div>
+<div class="p-8 flex flex-col gap-4 flex-grow justify-between">
+<div class="flex flex-col gap-2">
+<h3 class="text-2xl font-headline font-bold text-on-surface group-hover:text-primary transition-colors">Vortex Lending Protocol</h3>
+<p class="text-sm text-on-surface-variant leading-relaxed">Algorithmic money market with isolated risk pools and dynamic interest rate curves.</p>
+</div>
+<div class="flex items-center justify-between pt-4">
+<span class="text-xs font-bold text-secondary uppercase tracking-wider">Solidity • TypeScript</span>
+<span class="w-9 h-9 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface group-hover:bg-primary group-hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</span>
+</div>
+</div>
+</div>
+<!-- Project Card 2 -->
+<div class="portfolio-card flex flex-col rounded-2xl bg-surface-container-low overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_16px_40px_rgba(124,82,170,0.12)] transition-all duration-300 group" data-category="nft">
+<div class="relative overflow-hidden h-64">
+<div class="w-full h-full bg-cover bg-center group-hover:scale-105 transition-transform duration-500" data-alt="A high-end generative art NFT marketplace interface featuring stunning 3D gemstone tokens against a soft pink-white background with live bid trackers." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA6PIrm2DtH-UaghdUlgIlhOVKtvraIubEW2wSI0SnzVx_JTQ-KkYJ4o4-W0ruuNWWhtuUnbIRPQZsHZREs3rOwaRYXzRSCLh09Tum3VYEyDOSlnW4UcyJrR1joJ6p3C0eqojtQ98AzGZznH1kM7_CrvHqDq_rH_RtAZb-C9KRm1iIyOtokDqct33pt6ZGo0-HaLCXEhaIUVkdqSBKYuMM7RNK9na31zudc2dkclf6N4WD7nFZo_pXB')"></div>
+<div class="absolute top-4 left-4"><span class="px-3.5 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed text-xs font-bold">NFT</span></div>
+</div>
+<div class="p-8 flex flex-col gap-4 flex-grow justify-between">
+<div class="flex flex-col gap-2">
+<h3 class="text-2xl font-headline font-bold text-on-surface group-hover:text-secondary transition-colors">Aura Prime Marketplace</h3>
+<p class="text-sm text-on-surface-variant leading-relaxed">Gas-optimized ERC-721A marketplace with fractionalized ownership vaults and royalties.</p>
+</div>
+<div class="flex items-center justify-between pt-4">
+<span class="text-xs font-bold text-secondary uppercase tracking-wider">ERC-721A • IPFS</span>
+<span class="w-9 h-9 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface group-hover:bg-secondary group-hover:text-on-secondary transition-colors">
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</span>
+</div>
+</div>
+</div>
+<!-- Project Card 3 -->
+<div class="portfolio-card flex flex-col rounded-2xl bg-surface-container-low overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_16px_40px_rgba(0,150,204,0.12)] transition-all duration-300 group" data-category="dapps">
+<div class="relative overflow-hidden h-64">
+<div class="w-full h-full bg-cover bg-center group-hover:scale-105 transition-transform duration-500" data-alt="An advanced DAO governance voting platform showing active proposal timelines, quorum indicators, and delegate reputation scorecards." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAA9x0nDXjaCeJF-stROnUmt3hI__OkaepUN-1MKeksimAw4UNVHphxMCZ9629P1W5ZokczvaIsF1ELnVIVfmn0bIsn-BcZJMjH5erWVC3qfnG3HK2US7KnG8e-RNVsu58IurP1XYtacWiDuOpmF1CYG78znIeCYm1K8ojqoAgCMBPE8RcrQLwUH3vGdL3hb1kPKcsOFGrULfxWivSHu6vudFG87tE-2wQ0S4nZrAtM6HkyqvR4BnWY')"></div>
+<div class="absolute top-4 left-4"><span class="px-3.5 py-1 rounded-full bg-tertiary-fixed text-on-tertiary-fixed text-xs font-bold">dApps</span></div>
+</div>
+<div class="p-8 flex flex-col gap-4 flex-grow justify-between">
+<div class="flex flex-col gap-2">
+<h3 class="text-2xl font-headline font-bold text-on-surface group-hover:text-tertiary transition-colors">Nexus DAO Governor</h3>
+<p class="text-sm text-on-surface-variant leading-relaxed">Decentralized governance suite with quadratic voting and automated execution modules.</p>
+</div>
+<div class="flex items-center justify-between pt-4">
+<span class="text-xs font-bold text-tertiary uppercase tracking-wider">OpenZeppelin • React</span>
+<span class="w-9 h-9 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface group-hover:bg-tertiary group-hover:text-on-tertiary transition-colors">
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</span>
+</div>
+</div>
+</div>
+<!-- Project Card 4 -->
+<div class="portfolio-card flex flex-col rounded-2xl bg-surface-container-low overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_16px_40px_rgba(224,64,160,0.12)] transition-all duration-300 group" data-category="enterprise">
+<div class="relative overflow-hidden h-64">
+<div class="w-full h-full bg-cover bg-center group-hover:scale-105 transition-transform duration-500" data-alt="An enterprise supply chain traceability dashboard displaying permissioned ledger nodes, shipment checkpoints, and compliance audit logs." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBLbb8_a_mdEM6T831G8vtdBqJMF6ij4DbaFi2IbrRYkSx81j2xclvCHORpd5tPpsTR62Rkpark7wKiwjzCNMKxgUmTEaDU-gGSSPQxqo4gadD6XrmudWP2yYJ7YvuOGZ1ETI93_MIg-4Az5XwPieSEZYu-mZhzqs1rrpM1hZObemZENNo8tmbaHTrV1DZNOBiBNw04p3cGilzkTkrcSP3Z3-wSGl6KKMU7_W3MXyGif7UzyjJiEL7A')"></div>
+<div class="absolute top-4 left-4"><span class="px-3.5 py-1 rounded-full bg-primary-fixed text-on-primary-fixed text-xs font-bold">Enterprise</span></div>
+</div>
+<div class="p-8 flex flex-col gap-4 flex-grow justify-between">
+<div class="flex flex-col gap-2">
+<h3 class="text-2xl font-headline font-bold text-on-surface group-hover:text-primary transition-colors">ChainTrace Logistics</h3>
+<p class="text-sm text-on-surface-variant leading-relaxed">Permissioned supply chain verification network tracking luxury goods from origin to retail.</p>
+</div>
+<div class="flex items-center justify-between pt-4">
+<span class="text-xs font-bold text-primary uppercase tracking-wider">Hyperledger • Go</span>
+<span class="w-9 h-9 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface group-hover:bg-primary group-hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</span>
+</div>
+</div>
+</div>
+<!-- Project Card 5 -->
+<div class="portfolio-card flex flex-col rounded-2xl bg-surface-container-low overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_16px_40px_rgba(124,82,170,0.12)] transition-all duration-300 group" data-category="web3">
+<div class="relative overflow-hidden h-64">
+<div class="w-full h-full bg-cover bg-center group-hover:scale-105 transition-transform duration-500" data-alt="A cross-chain identity and credential management dashboard highlighting cryptographic proof generation and zero-knowledge login flows." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAjoI-xbJVCl-u5APpgHLQIa266deBdGd0faDVdMht5DBTW9B51RrAiEn0MlbNxpe8uDT2MGErQDZHqtW-lk4gUJCJbyi5X13twnI_9KOCzO7myDnpxQtTP_0RNOvdjirt5W8qlpVHgtIP7Og3EiVvHgiai_pS9bQGxTq_5u1Zd4v6h2CST7VsEDN-1kSC58mLSED5k8sCHN7CAt39_JXiEHxrR2XJtNaWr9HpOpFV3ThsElADG-xWV')"></div>
+<div class="absolute top-4 left-4"><span class="px-3.5 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed text-xs font-bold">Web3 Platforms</span></div>
+</div>
+<div class="p-8 flex flex-col gap-4 flex-grow justify-between">
+<div class="flex flex-col gap-2">
+<h3 class="text-2xl font-headline font-bold text-on-surface group-hover:text-secondary transition-colors">VeriID Zero-Knowledge Suite</h3>
+<p class="text-sm text-on-surface-variant leading-relaxed">Decentralized identity protocol enabling verifiable credentials without PII exposure.</p>
+</div>
+<div class="flex items-center justify-between pt-4">
+<span class="text-xs font-bold text-secondary uppercase tracking-wider">Circom • TypeScript</span>
+<span class="w-9 h-9 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface group-hover:bg-secondary group-hover:text-on-secondary transition-colors">
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</span>
+</div>
+</div>
+</div>
+<!-- Project Card 6 -->
+<div class="portfolio-card flex flex-col rounded-2xl bg-surface-container-low overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_16px_40px_rgba(0,150,204,0.12)] transition-all duration-300 group" data-category="defi">
+<div class="relative overflow-hidden h-64">
+<div class="w-full h-full bg-cover bg-center group-hover:scale-105 transition-transform duration-500" data-alt="An automated yield aggregator interface displaying compounding vault yields, multi-strategy allocation charts, and reward token harvests." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAQ3Yvz5WJI0L5FmJgSAArMhene8idHnQXvlLf459WNv_fSlFl-j1bkm5mvGsqYTitWqp7kCDAt-mMrXd_dz1lJRFDogyq0cvEfS9jtq44alsRezIl4EN-DL2Oa4om4SQr5bkcD_p_U-nZYKzZ_eZDK6qSmHmJyACTE5d6a9ygsU-5HfgsNuXwztT1a_L3r7-7iAGZ-usM0YLvPKf70I_HZzaX-WuTrGKqI87GowgVk_VCtLndYZgGW')"></div>
+<div class="absolute top-4 left-4"><span class="px-3.5 py-1 rounded-full bg-tertiary-fixed text-on-tertiary-fixed text-xs font-bold">DeFi</span></div>
+</div>
+<div class="p-8 flex flex-col gap-4 flex-grow justify-between">
+<div class="flex flex-col gap-2">
+<h3 class="text-2xl font-headline font-bold text-on-surface group-hover:text-tertiary transition-colors">YieldPulse Vaults</h3>
+<p class="text-sm text-on-surface-variant leading-relaxed">Automated compounding strategies optimizing LP positions across decentralized exchanges.</p>
+</div>
+<div class="flex items-center justify-between pt-4">
+<span class="text-xs font-bold text-tertiary uppercase tracking-wider">Solidity • Foundry</span>
+<span class="w-9 h-9 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface group-hover:bg-tertiary group-hover:text-on-tertiary transition-colors">
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 4 — Technology by Project -->
+<section class="w-full py-24 bg-surface-container-low">
+<div class="max-w-7xl mx-auto px-6 lg:px-12 flex flex-col gap-16">
+<div class="flex flex-col gap-3 text-center max-w-2xl mx-auto">
+<span class="text-secondary font-headline font-bold text-sm uppercase tracking-wider">Ecosystem Mapping</span>
+<h2 class="text-3xl sm:text-5xl font-headline font-extrabold text-on-surface tracking-tight">
+          Technology Stack Architecture
+        </h2>
+<p class="text-on-surface-variant text-base sm:text-lg">
+          Trace how our projects seamlessly connect from foundational blockchain layers up to client-facing frontends and infrastructure.
+        </p>
+</div>
+<!-- Interactive Flow Matrix -->
+<div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
+<!-- Column 1: Projects -->
+<div class="flex flex-col gap-4 p-6 rounded-2xl bg-surface shadow-[0_8px_30px_rgba(0,0,0,0.03)]">
+<div class="flex items-center gap-2 pb-3 border-b border-outline-variant/10">
+<span class="w-8 h-8 rounded-full bg-primary-fixed text-on-primary-fixed flex items-center justify-center font-bold text-xs">01</span>
+<span class="font-headline font-bold text-on-surface">Projects</span>
+</div>
+<div class="flex flex-col gap-3">
+<button class="tech-node-btn text-left p-3 rounded-xl bg-primary-fixed/50 hover:bg-primary text-on-primary-fixed hover:text-on-primary font-bold text-sm transition-all" data-target="etherstream">EtherStream</button>
+<button class="tech-node-btn text-left p-3 rounded-xl bg-surface-container-high hover:bg-primary text-on-surface hover:text-on-primary font-bold text-sm transition-all" data-target="vortex">Vortex Protocol</button>
+<button class="tech-node-btn text-left p-3 rounded-xl bg-surface-container-high hover:bg-primary text-on-surface hover:text-on-primary font-bold text-sm transition-all" data-target="auraprime">Aura Prime</button>
+<button class="tech-node-btn text-left p-3 rounded-xl bg-surface-container-high hover:bg-primary text-on-surface hover:text-on-primary font-bold text-sm transition-all" data-target="veriid">VeriID Suite</button>
+</div>
+</div>
+<!-- Column 2: Blockchains -->
+<div class="flex flex-col gap-4 p-6 rounded-2xl bg-surface shadow-[0_8px_30px_rgba(0,0,0,0.03)]">
+<div class="flex items-center gap-2 pb-3 border-b border-outline-variant/10">
+<span class="w-8 h-8 rounded-full bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center font-bold text-xs">02</span>
+<span class="font-headline font-bold text-on-surface">Blockchains</span>
+</div>
+<div class="flex flex-col gap-3">
+<div class="p-3 rounded-xl bg-secondary-fixed/40 text-on-secondary-fixed font-medium text-sm">Arbitrum One / L2</div>
+<div class="p-3 rounded-xl bg-surface-container-high text-on-surface font-medium text-sm">Ethereum Mainnet</div>
+<div class="p-3 rounded-xl bg-surface-container-high text-on-surface font-medium text-sm">Optimism / Base</div>
+<div class="p-3 rounded-xl bg-surface-container-high text-on-surface font-medium text-sm">Polygon PoS</div>
+</div>
+</div>
+<!-- Column 3: Smart Contracts -->
+<div class="flex flex-col gap-4 p-6 rounded-2xl bg-surface shadow-[0_8px_30px_rgba(0,0,0,0.03)]">
+<div class="flex items-center gap-2 pb-3 border-b border-outline-variant/10">
+<span class="w-8 h-8 rounded-full bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-center font-bold text-xs">03</span>
+<span class="font-headline font-bold text-on-surface">Smart Contracts</span>
+</div>
+<div class="flex flex-col gap-3">
+<div class="p-3 rounded-xl bg-tertiary-fixed/40 text-on-tertiary-fixed font-medium text-sm">Solidity 0.8.24 + AMM Hooks</div>
+<div class="p-3 rounded-xl bg-surface-container-high text-on-surface font-medium text-sm">ERC-4626 Vaults</div>
+<div class="p-3 rounded-xl bg-surface-container-high text-on-surface font-medium text-sm">ERC-721A Enumerable</div>
+<div class="p-3 rounded-xl bg-surface-container-high text-on-surface font-medium text-sm">Circom ZK-Circuits</div>
+</div>
+</div>
+<!-- Column 4: Frontend -->
+<div class="flex flex-col gap-4 p-6 rounded-2xl bg-surface shadow-[0_8px_30px_rgba(0,0,0,0.03)]">
+<div class="flex items-center gap-2 pb-3 border-b border-outline-variant/10">
+<span class="w-8 h-8 rounded-full bg-primary-fixed text-on-primary-fixed flex items-center justify-center font-bold text-xs">04</span>
+<span class="font-headline font-bold text-on-surface">Frontend</span>
+</div>
+<div class="flex flex-col gap-3">
+<div class="p-3 rounded-xl bg-primary-fixed/40 text-on-primary-fixed font-medium text-sm">Next.js 14 App Router</div>
+<div class="p-3 rounded-xl bg-surface-container-high text-on-surface font-medium text-sm">Wagmi / Viem Hooks</div>
+<div class="p-3 rounded-xl bg-surface-container-high text-on-surface font-medium text-sm">Tailwind CSS + Framer</div>
+<div class="p-3 rounded-xl bg-surface-container-high text-on-surface font-medium text-sm">RainbowKit Connect</div>
+</div>
+</div>
+<!-- Column 5: Infrastructure -->
+<div class="flex flex-col gap-4 p-6 rounded-2xl bg-surface shadow-[0_8px_30px_rgba(0,0,0,0.03)]">
+<div class="flex items-center gap-2 pb-3 border-b border-outline-variant/10">
+<span class="w-8 h-8 rounded-full bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center font-bold text-xs">05</span>
+<span class="font-headline font-bold text-on-surface">Infrastructure</span>
+</div>
+<div class="flex flex-col gap-3">
+<div class="p-3 rounded-xl bg-secondary-fixed/40 text-on-secondary-fixed font-medium text-sm">Alchemy RPC Nodes</div>
+<div class="p-3 rounded-xl bg-surface-container-high text-on-surface font-medium text-sm">The Graph Subgraphs</div>
+<div class="p-3 rounded-xl bg-surface-container-high text-on-surface font-medium text-sm">IPFS / Arweave Storage</div>
+<div class="p-3 rounded-xl bg-surface-container-high text-on-surface font-medium text-sm">Foundry CI/CD Pipelines</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 5 — Final CTA -->
+<section class="w-full py-28 relative overflow-hidden bg-surface">
+<div class="absolute inset-0 bg-gradient-to-tr from-primary-fixed/20 via-transparent to-tertiary-fixed/20 pointer-events-none"></div>
+<div class="max-w-7xl mx-auto px-6 lg:px-12 relative z-10 flex flex-col lg:flex-row items-center gap-16">
+<div class="flex flex-col gap-6 max-w-2xl">
+<div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-fixed text-on-primary-fixed text-xs font-headline font-bold uppercase tracking-wider w-fit shadow-[0_2px_8px_rgba(224,64,160,0.15)]">
+<span class="material-symbols-outlined text-[16px]">bolt</span>
+          Transform Your Product
+        </div>
+<h2 class="text-3xl sm:text-5xl font-headline font-extrabold text-on-surface tracking-tight leading-tight">
+          See a Similar Challenge in Your Product?
+        </h2>
+<p class="text-lg text-on-surface-variant leading-relaxed">
+          Explore how the engineering approaches behind these projects could inform the architecture and development of your own Web3 product.
+        </p>
+<div class="flex flex-wrap items-center gap-4 pt-4">
+<a class="px-8 py-4 rounded-full bg-primary text-on-primary font-headline font-bold shadow-[0_4px_20px_rgba(224,64,160,0.3)] hover:scale-103 transition-transform flex items-center gap-2" data-path="contact" href="#">
+            Discuss a Similar Project
+            <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</a>
+<a class="px-8 py-4 rounded-full bg-surface-container-high text-on-surface font-headline font-bold hover:bg-surface-container-highest transition-colors" data-path="services" href="#">
+            View Our Services
+          </a>
+</div>
+</div>
+<div class="w-full lg:w-1/2 relative">
+<div class="relative w-full rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(0,150,204,0.15)] bg-surface-container">
+<div class="w-full h-[380px] bg-cover bg-center" data-alt="An artistic visualization showing smart contract code architecture morphing into a futuristic tokenized dashboard with glowing pink and sky blue geometric nodes." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCB9AwkrurD8UOEf8qii7JtTEzJZsPj9iN1TlFp1eCV_RZwBmyxP9j_kP3SPx7ubA2eLV4fxukmB3ltpAs9Cuky1olGMR6SfHcyHi1QyFOuYkVCJeG3A1Xla2lh8gcwqzEUyg0wDdjCnIGIcdPlj_Qu_F4tzRIthhUxQH5XHy85pL1qOnyeJnGMFZgrj3nCKxsjnHJMbqCbHT0w_ozNSIPgQAEU8O8rqcxMSdKXLL2c4iHTZWm6sTgL')"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 6 — Global Footer -->
+<section class="w-full py-20 bg-surface-container text-on-surface">
+<div class="max-w-7xl mx-auto px-6 lg:px-12 grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+<div class="flex flex-col gap-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined text-[20px]">hub</span>
+</div>
+<span class="font-headline font-bold text-xl tracking-tight text-on-surface">CHAINMIND LABS</span>
+</div>
+<p class="text-sm text-on-surface-variant leading-relaxed">
+          Pioneering Web3 engineering agency delivering secure smart contracts, scalable dApps, and institutional DeFi infrastructure.
+        </p>
+</div>
+<div class="flex flex-col gap-3">
+<span class="font-headline font-bold text-sm text-on-surface uppercase tracking-wider">Expertise</span>
+<a class="text-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Smart Contract Auditing</a>
+<a class="text-sm text-on-surface-variant hover:text-primary transition-colors" href="#">DeFi Protocol Architecture</a>
+<a class="text-sm text-on-surface-variant hover:text-primary transition-colors" href="#">ZK-Rollup Solutions</a>
+<a class="text-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Enterprise Blockchains</a>
+</div>
+<div class="flex flex-col gap-3">
+<span class="font-headline font-bold text-sm text-on-surface uppercase tracking-wider">Resources</span>
+<a class="text-sm text-on-surface-variant hover:text-primary transition-colors" href="#gallery">Project Portfolio</a>
+<a class="text-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Technical Whitepapers</a>
+<a class="text-sm text-on-surface-variant hover:text-primary transition-colors" href="#">GitHub Repository</a>
+<a class="text-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Security Disclosures</a>
+</div>
+<div class="flex flex-col gap-4">
+<span class="font-headline font-bold text-sm text-on-surface uppercase tracking-wider">Stay Updated</span>
+<p class="text-sm text-on-surface-variant">Get our bi-weekly deep dives into Web3 engineering trends.</p>
+<div class="flex items-center gap-2">
+<input class="px-4 py-3 rounded-full bg-surface-container-lowest text-on-surface text-sm focus:outline-none focus:ring-2 focus:ring-primary w-full" placeholder="Enter your work email" type="email"/>
+<button class="px-5 py-3 rounded-full bg-primary text-on-primary font-bold text-sm shadow-[0_4px_12px_rgba(224,64,160,0.2)] hover:scale-103 transition-transform">Join</button>
+</div>
+</div>
+</div>
+<div class="max-w-7xl mx-auto px-6 lg:px-12 pt-8 border-t border-outline-variant/20 flex flex-col sm:flex-row items-center justify-between gap-4 text-on-surface-variant text-sm">
+<span class="">© 2024 ChainMind Labs. Engineered with precision.</span>
+<div class="flex items-center gap-6">
+<a class="hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="hover:text-primary transition-colors" href="#">Terms of Service</a>
+<a class="hover:text-primary transition-colors" href="#">Security</a>
+</div>
+</div>
+</section>
+<!-- Interactivity Scripts -->
+<script>
+    // Portfolio Filtering logic
+    const filterButtons = document.querySelectorAll('#portfolio-filters button');
+    const portfolioCards = document.querySelectorAll('#portfolio-grid .portfolio-card');
+
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterButtons.forEach(b => {
+          b.classList.remove('bg-primary', 'text-on-primary', 'shadow-[0_2px_10px_rgba(224,64,160,0.2)]');
+          b.classList.add('bg-surface-container-high', 'text-on-surface');
+        });
+        btn.classList.remove('bg-surface-container-high', 'text-on-surface');
+        btn.classList.add('bg-primary', 'text-on-primary', 'shadow-[0_2px_10px_rgba(224,64,160,0.2)]');
+
+        const filterValue = btn.getAttribute('data-filter');
+
+        portfolioCards.forEach(card => {
+          if (filterValue === 'all' || card.getAttribute('data-category') === filterValue) {
+            card.style.display = 'flex';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+
+    // Technology Flow Interaction
+    const techBtns = document.querySelectorAll('.tech-node-btn');
+    techBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        techBtns.forEach(b => {
+          b.classList.remove('bg-primary', 'text-on-primary');
+          b.classList.add('bg-surface-container-high', 'text-on-surface');
+        });
+        btn.classList.remove('bg-surface-container-high', 'text-on-surface');
+        btn.classList.add('bg-primary', 'text-on-primary');
+      });
+    });
+  </script>
+</div></main>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Light / Dark mode toggle button in header
+      const themeToggle = Array.from(document.querySelectorAll('header button')).find(btn => btn.textContent.includes('light_mode') || btn.textContent.includes('dark_mode'));
+      
+      // Load saved theme from localStorage
+      if (localStorage.getItem('theme') === 'dark') {
+          document.documentElement.classList.add('dark');
+          if (themeToggle) {
+              const icon = themeToggle.querySelector('.material-symbols-outlined');
+              if (icon) icon.textContent = 'light_mode';
+          }
+      }
+
+      if (themeToggle) {
+        themeToggle.addEventListener('click', () => {
+          document.documentElement.classList.toggle('dark');
+          const isDark = document.documentElement.classList.contains('dark');
+          
+          // Save theme to localStorage
+          localStorage.setItem('theme', isDark ? 'dark' : 'light');
+          
+          const icon = themeToggle.querySelector('.material-symbols-outlined');
+          if (icon) {
+            icon.textContent = isDark ? 'light_mode' : 'dark_mode';
+          }
+        });
+      }
+
+      // LTR / RTL toggle button in header
+      if (localStorage.getItem('dir') === 'rtl') {
+          document.documentElement.setAttribute('dir', 'rtl');
+      }
+      const globeToggle = Array.from(document.querySelectorAll('header button')).find(btn => btn.textContent.includes('globe'));
+      if (globeToggle) {
+        globeToggle.addEventListener('click', () => {
+          const currentDir = document.documentElement.getAttribute('dir');
+          const newDir = currentDir === 'rtl' ? 'ltr' : 'rtl';
+          document.documentElement.setAttribute('dir', newDir);
+          localStorage.setItem('dir', newDir);
+        });
+      }
+
+      // Fix links
+      const navLinks = document.querySelectorAll('nav a, footer a[data-path], a[data-path]');
+      navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+          const path = link.getAttribute('data-path');
+          if (path) {
+            e.preventDefault();
+            const routes = {
+              'home-engineering-authority': 'index.html',
+              'home-web3-studio': 'home2.html',
+              'home-web3-product-studio': 'home2.html',
+              'services': 'services.html',
+              'portfolio': 'portfolio.html',
+              'technologies': 'technologies.html',
+              'contact': 'contact.html'
+            };
+            if (routes[path]) {
+                window.location.href = routes[path];
+            }
+          }
+        });
+      });
+    });
+</script>
+
+</body></html>

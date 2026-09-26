@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_standard" name="shell-type"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}
+  /* Fix opacity modifier backgrounds that were defaulting to light grey/white */
+  html.dark .bg-surface-container-lowest\/80 { background-color: rgba(44, 20, 36, 0.85) !important; box-shadow: 0 12px 40px rgba(0,0,0,0.5) !important; }
+  html.dark .bg-surface-container\/10 { background-color: rgba(44, 26, 38, 0.1) !important; }
+  html.dark .bg-surface-container\/5 { background-color: rgba(44, 26, 38, 0.05) !important; }
+  html.dark .bg-surface-container-low\/10 { background-color: rgba(34, 21, 29, 0.1) !important; }
+  html.dark .bg-surface\/90 { background-color: rgba(26, 16, 22, 0.9) !important; }
+  html.dark .bg-surface\/80 { background-color: rgba(26, 16, 22, 0.85) !important; }
+
+  /* Fix Fixed Color Badges (bg-primary-fixed, etc.) in Dark Mode */
+  html.dark .bg-primary-fixed { background-color: rgba(224, 64, 160, 0.15) !important; }
+  html.dark .text-on-primary-fixed { color: #ffb3e6 !important; }
+  
+  html.dark .bg-secondary-fixed { background-color: rgba(124, 82, 170, 0.15) !important; }
+  html.dark .text-on-secondary-fixed { color: #d3a8ff !important; }
+  
+  html.dark .bg-tertiary-fixed { background-color: rgba(82, 160, 190, 0.15) !important; }
+  html.dark .text-on-tertiary-fixed { color: #80d0f0 !important; }
+</style>
+
+<script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = {"darkMode":"class","theme":{"extend":{"colors":{"surface-container-lowest":"#ffffff","primary":"#e040a0","secondary":"#7c52aa","on-surface-variant":"#604868","on-tertiary":"#ffffff","surface-variant":"#f2e8f2","on-primary-fixed-variant":"#a02070","primary-container":"#f080c0","inverse-surface":"#2e1a28","on-background":"#2e1a28","on-error-container":"#9b1c1c","on-secondary-container":"#2e2040","on-secondary-fixed":"#1a1030","error-container":"#ffe8e8","surface-tint":"#e040a0","background":"#fef7ff","surface-container":"#f8eef8","surface-dim":"#e0d6e0","surface":"#fef7ff","tertiary-fixed":"#c8eaff","inverse-primary":"#f0a0cc","outline":"#907898","surface-container-highest":"#ece2ec","surface-container-high":"#f2e8f2","on-secondary":"#ffffff","tertiary-fixed-dim":"#80d0f0","secondary-fixed":"#eedcff","outline-variant":"#dcc8e0","on-primary":"#ffffff","on-secondary-fixed-variant":"#4a3068","on-tertiary-container":"#00334d","tertiary":"#0096cc","tertiary-container":"#40c0ee","surface-container-low":"#fbf2fb","on-tertiary-fixed":"#001a33","on-tertiary-fixed-variant":"#005580","primary-fixed":"#ffd6ee","primary-fixed-dim":"#f0a0cc","on-primary-fixed":"#3d0028","surface-bright":"#fef7ff","secondary-fixed-dim":"#c8a8e8","on-error":"#ffffff","on-primary-container":"#2e1a28","secondary-container":"#eedcff","error":"#e53e3e","inverse-on-surface":"#fef7ff","on-surface":"#2e1a28"},"borderRadius":{"DEFAULT":"1rem","lg":"2rem","xl":"3rem","full":"9999px"},"spacing":{},"fontFamily":{"headline":["DM Sans"],"display":["DM Sans"],"body":["DM Sans"],"label":["DM Sans"]}}}};</script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<style id="dark-mode-styles">
+  /* Base Backgrounds */
+  html.dark body, html.dark main, html.dark section, html.dark .bg-surface { background-color: #1a1016 !important; color: #ffffff !important; }
+  
+  /* Flatten Tailwind Gradients in Dark Mode so they don't use light mode hex colors */
+  html.dark .bg-gradient-to-b, 
+  html.dark .bg-gradient-to-br, 
+  html.dark .bg-gradient-to-tr, 
+  html.dark .bg-gradient-to-t,
+  html.dark .bg-gradient-to-r,
+  html.dark .bg-gradient-to-l { 
+      background-image: none !important; 
+      background-color: transparent !important;
+  }
+  
+  /* Surface Containers */
+  html.dark .bg-surface-container-lowest { background-color: #120a10 !important; }
+  html.dark .bg-surface-container-low { background-color: #22151d !important; }
+  html.dark .bg-surface-container { background-color: #2c1a26 !important; }
+  html.dark .bg-surface-container-high { background-color: #382030 !important; }
+  html.dark .bg-surface-container-highest { background-color: #45283a !important; }
+  
+  /* Text Colors */
+  html.dark .text-on-surface { color: #ffffff !important; }
+  html.dark .text-on-surface-variant { color: #d4a9c5 !important; }
+  html.dark .text-primary { color: #ffb3e6 !important; } /* Brighter pink for dark mode contrast */
+  html.dark .text-secondary { color: #d3a8ff !important; } /* Brighter purple */
+  html.dark .text-tertiary { color: #80d0f0 !important; } /* Brighter blue */
+  html.dark .text-outline { color: #aa7799 !important; }
+  
+  /* Borders */
+  html.dark .border-outline-variant { border-color: #553548 !important; }
+  html.dark .border-outline { border-color: #aa7799 !important; }
+  
+  /* Header */
+  html.dark header { background-color: rgba(26, 16, 22, 0.85) !important; }
+  
+  /* Specific Fixes */
+  html.dark .bg-primary-container { background-color: #59003b !important; color: #ffd6ee !important; }
+  html.dark .text-on-primary-container { color: #ffd6ee !important; }
+  
+  html.dark .group-hover\:bg-surface-container-high:hover { background-color: #382030 !important; }
+  html.dark .hover\:bg-surface-container-high:hover { background-color: #382030 !important; }
+  
+  /* Ensure spans inside headings inherit colors properly */
+  html.dark h1 span.text-primary, html.dark h2 span.text-primary { color: #ffb3e6 !important; }
+
+  /* Fix opacity modifier backgrounds that were defaulting to light grey/white */
+  html.dark .bg-surface-container-lowest\/80 { background-color: rgba(44, 20, 36, 0.85) !important; box-shadow: 0 12px 40px rgba(0,0,0,0.5) !important; }
+  html.dark .bg-surface-container\/10 { background-color: rgba(44, 26, 38, 0.1) !important; }
+  html.dark .bg-surface-container\/5 { background-color: rgba(44, 26, 38, 0.05) !important; }
+  html.dark .bg-surface-container-low\/10 { background-color: rgba(34, 21, 29, 0.1) !important; }
+  html.dark .bg-surface\/90 { background-color: rgba(26, 16, 22, 0.9) !important; }
+  html.dark .bg-surface\/80 { background-color: rgba(26, 16, 22, 0.85) !important; }
+
+  /* Fix Fixed Color Badges (bg-primary-fixed, etc.) in Dark Mode */
+  html.dark .bg-primary-fixed { background-color: rgba(224, 64, 160, 0.15) !important; }
+  html.dark .text-on-primary-fixed { color: #ffb3e6 !important; }
+  
+  html.dark .bg-secondary-fixed { background-color: rgba(124, 82, 170, 0.15) !important; }
+  html.dark .text-on-secondary-fixed { color: #d3a8ff !important; }
+  
+  html.dark .bg-tertiary-fixed { background-color: rgba(82, 160, 190, 0.15) !important; }
+  html.dark .text-on-tertiary-fixed { color: #80d0f0 !important; }
+</style>
+
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%20100%20100%27%3E%0A%20%20%3Ccircle%20cx%3D%2750%27%20cy%3D%2750%27%20r%3D%2750%27%20fill%3D%27%23e040a0%27/%3E%0A%20%20%0A%20%20%3C%21--%20Connecting%20lines%20drawn%20first%20so%20they%20sit%20under%20the%20circles%20--%3E%0A%20%20%3Cg%20stroke%3D%27%23ffffff%27%20stroke-width%3D%276%27%20stroke-linecap%3D%27round%27%3E%0A%20%20%20%20%3Cline%20x1%3D%2750%27%20y1%3D%2750%27%20x2%3D%2750%27%20y2%3D%2725%27/%3E%0A%20%20%20%20%3Cg%20transform%3D%27rotate%2872%2050%2050%29%27%3E%3Cline%20x1%3D%2750%27%20y1%3D%2750%27%20x2%3D%2750%27%20y2%3D%2725%27/%3E%3C/g%3E%0A%20%20%20%20%3Cg%20transform%3D%27rotate%28144%2050%2050%29%27%3E%3Cline%20x1%3D%2750%27%20y1%3D%2750%27%20x2%3D%2750%27%20y2%3D%2725%27/%3E%3C/g%3E%0A%20%20%20%20%3Cg%20transform%3D%27rotate%28216%2050%2050%29%27%3E%3Cline%20x1%3D%2750%27%20y1%3D%2750%27%20x2%3D%2750%27%20y2%3D%2725%27/%3E%3C/g%3E%0A%20%20%20%20%3Cg%20transform%3D%27rotate%28288%2050%2050%29%27%3E%3Cline%20x1%3D%2750%27%20y1%3D%2750%27%20x2%3D%2750%27%20y2%3D%2725%27/%3E%3C/g%3E%0A%20%20%3C/g%3E%0A%20%20%0A%20%20%3C%21--%20Hollow%20rings%20drawn%20on%20top%20%28filled%20with%20background%20color%20so%20lines%20don%27t%20show%20inside%29%20--%3E%0A%20%20%3Cg%20stroke%3D%27%23ffffff%27%20stroke-width%3D%275%27%20fill%3D%27%23e040a0%27%3E%0A%20%20%20%20%3Ccircle%20cx%3D%2750%27%20cy%3D%2750%27%20r%3D%278%27/%3E%0A%20%20%20%20%3Ccircle%20cx%3D%2750%27%20cy%3D%2725%27%20r%3D%277%27/%3E%0A%20%20%20%20%3Cg%20transform%3D%27rotate%2872%2050%2050%29%27%3E%3Ccircle%20cx%3D%2750%27%20cy%3D%2725%27%20r%3D%277%27/%3E%3C/g%3E%0A%20%20%20%20%3Cg%20transform%3D%27rotate%28144%2050%2050%29%27%3E%3Ccircle%20cx%3D%2750%27%20cy%3D%2725%27%20r%3D%277%27/%3E%3C/g%3E%0A%20%20%20%20%3Cg%20transform%3D%27rotate%28216%2050%2050%29%27%3E%3Ccircle%20cx%3D%2750%27%20cy%3D%2725%27%20r%3D%277%27/%3E%3C/g%3E%0A%20%20%20%20%3Cg%20transform%3D%27rotate%28288%2050%2050%29%27%3E%3Ccircle%20cx%3D%2750%27%20cy%3D%2725%27%20r%3D%277%27/%3E%3C/g%3E%0A%20%20%3C/g%3E%0A%3C/svg%3E"><circle cx='50' cy='50' r='50' fill='%23e040a0'/><text y='75' x='50' font-size='70' text-anchor='middle' fill='%23ffffff' font-family='sans-serif'>⚇</text></svg>">
+<title>ChainMind Labs</title>
+</head><body class="bg-surface font-body text-on-surface"><header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-20 max-w-7xl mx-auto px-6 lg:px-12 flex items-center justify-between"><a href="index.html" class="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity"><div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center shadow-[0_4px_16px_rgba(224,64,160,0.2)]"><span class="material-symbols-outlined text-on-primary text-[20px]">hub</span></div><span class="text-xl font-headline font-bold tracking-tight text-on-surface">CHAINMIND LABS</span></a><nav class="hidden lg:flex items-center gap-2" data-active-classes="bg-primary-container text-on-primary-container font-bold rounded-full px-4 py-2"><div class="relative group">
+    <button class="text-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high px-4 py-2 rounded-full transition-all flex items-center gap-1">Home <span class="material-symbols-outlined text-[16px]">expand_more</span></button>
+    <div class="absolute left-1/2 -translate-x-1/2 top-full mt-2 w-40 bg-surface border border-outline-variant rounded-xl shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all flex flex-col overflow-hidden">
+        <a class="px-4 py-3 text-sm text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface text-center" data-path="home-engineering-authority" href="index.html">Home 1</a>
+        <a class="px-4 py-3 text-sm text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface text-center" data-path="home-web3-studio" href="home2.html">Home 2</a>
+    </div>
+</div><a class="text-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high px-4 py-2 rounded-full transition-all" data-path="services" href="#">Services</a><a class="text-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high px-4 py-2 rounded-full transition-all" data-path="portfolio" href="#">Portfolio</a><a class="text-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high px-4 py-2 rounded-full transition-all" data-path="technologies" href="#">Technologies</a><a class="text-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high px-4 py-2 rounded-full transition-all" data-path="contact" href="#">Contact</a></nav><div class="flex items-center gap-4"><button class="w-10 h-10 rounded-full bg-surface-container-low hover:bg-surface-container-high flex items-center justify-center text-on-surface-variant hover:text-on-surface transition-all"><span class="material-symbols-outlined text-[20px]">globe</span></button><button class="w-10 h-10 rounded-full bg-surface-container-low hover:bg-surface-container-high flex items-center justify-center text-on-surface-variant hover:text-on-surface transition-all"><span class="material-symbols-outlined text-[20px]">light_mode</span></button><a class="hidden sm:inline-flex items-center justify-center px-6 py-3 rounded-full bg-primary text-on-primary font-bold shadow-[0_4px_16px_rgba(224,64,160,0.2)] hover:scale-103 transition-transform text-sm" data-path="contact" href="#">Start a Project</a><div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="w-full bg-surface"><div class="flex flex-col w-full">
+<!-- Section 1 — Hero / Page Introduction (Redesigned Centered Editorial Hero) -->
+<section class="relative flex flex-col justify-between overflow-hidden px-6 lg:px-12 pt-24 pb-16">
+<!-- Glowing Technical Background Mesh -->
+<div class="absolute inset-0 bg-[radial-gradient(#e040a0_1.5px,transparent_1.5px)] [background-size:32px_32px] opacity-25 pointer-events-none"></div>
+<div class="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] bg-gradient-to-tr from-primary/15 via-secondary/15 to-tertiary/15 rounded-full blur-[120px] pointer-events-none"></div>
+<!-- Main Centered Content -->
+<div class="max-w-5xl mx-auto w-full text-center flex flex-col items-center gap-8 relative z-10 my-auto">
+<!-- Floating Interactive Capability Pills -->
+<div class="flex flex-wrap items-center justify-center gap-3 animate-fade-in">
+<span class="px-5 py-2 rounded-full bg-primary-fixed text-on-primary-fixed text-xs font-bold tracking-wide uppercase shadow-sm flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary"></span>Smart Contracts
+</span>
+<span class="px-5 py-2 rounded-full bg-secondary-fixed text-on-secondary-fixed text-xs font-bold tracking-wide uppercase shadow-sm flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>dApps &amp; Protocols
+</span>
+<span class="px-5 py-2 rounded-full bg-tertiary-fixed text-on-tertiary-fixed text-xs font-bold tracking-wide uppercase shadow-sm flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>DeFi Ecosystems
+</span>
+<span class="px-5 py-2 rounded-full bg-surface-container-high text-on-surface text-xs font-bold tracking-wide uppercase shadow-sm flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-outline"></span>NFT Platforms
+</span>
+</div>
+<!-- Massive Typographic Headline -->
+<h1 class="text-5xl sm:text-7xl lg:text-8xl font-headline font-extrabold tracking-tight text-on-surface leading-[1.05]">
+          Engineering the Next Generation of <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary via-secondary to-tertiary">Web3</span>
+</h1>
+<!-- Supporting text -->
+<p class="text-lg sm:text-2xl text-on-surface-variant font-body leading-relaxed max-w-3xl mx-auto">
+          Building secure, scalable blockchain products, ultra-audited smart contracts, and high-performance decentralized applications engineered for maximum reliability and throughput.
+        </p>
+<!-- CTA Buttons -->
+<div class="flex flex-wrap items-center justify-center gap-4 pt-4">
+<a class="px-8 py-4 rounded-full bg-primary text-on-primary font-bold shadow-[0_4px_20px_rgba(224,64,160,0.3)] hover:scale-105 transition-all text-base flex items-center gap-2" data-path="contact" href="#">
+<span>Start a Web3 Project</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</a>
+<a class="px-8 py-4 rounded-full bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-bold transition-all text-base flex items-center gap-2" data-path="portfolio" href="#">
+<span>Explore Our Work</span>
+<span class="material-symbols-outlined text-[18px]">explore</span>
+</a>
+</div>
+<!-- Metrics Bar -->
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-8 w-full max-w-3xl pt-10 border-t border-outline-variant/30 mt-4">
+<div class="text-center">
+<div class="text-4xl font-extrabold font-headline text-primary">$4.2B+</div>
+<div class="text-xs text-on-surface-variant font-medium mt-1 uppercase tracking-wider">Total Value Secured</div>
+</div>
+<div class="text-center">
+<div class="text-4xl font-extrabold font-headline text-secondary">150+</div>
+<div class="text-xs text-on-surface-variant font-medium mt-1 uppercase tracking-wider">Smart Contracts Audited</div>
+</div>
+<div class="text-center">
+<div class="text-4xl font-extrabold font-headline text-tertiary">99.9%</div>
+<div class="text-xs text-on-surface-variant font-medium mt-1 uppercase tracking-wider">Uptime Reliability</div>
+</div>
+</div>
+</div>
+<!-- Panoramic Architecture Flow Preview Banner Across Bottom of Hero -->
+<div class="max-w-7xl mx-auto w-full relative z-10 mt-16">
+<div class="bg-surface-container-lowest/80 backdrop-blur-md rounded-3xl p-6 sm:p-8 shadow-[0_12px_40px_rgba(124,82,170,0.08)] border border-outline-variant/20 flex flex-col lg:flex-row items-center justify-between gap-6">
+<div class="flex items-center gap-4 text-left">
+<div class="w-12 h-12 rounded-2xl bg-primary-fixed flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined text-[24px]">architecture</span>
+</div>
+<div>
+<div class="text-xs font-bold uppercase tracking-widest text-primary">Pipeline Preview</div>
+<div class="text-lg font-headline font-bold text-on-surface">End-to-End Decentralized Execution</div>
+</div>
+</div>
+<div class="flex flex-wrap items-center justify-center gap-3 sm:gap-6 w-full lg:w-auto">
+<div class="flex items-center gap-2 bg-surface-container-low px-4 py-2 rounded-2xl text-xs font-bold text-on-surface shadow-sm">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>1. Consensus
+</div>
+<span class="material-symbols-outlined text-outline text-sm hidden sm:inline">chevron_right</span>
+<div class="flex items-center gap-2 bg-surface-container-low px-4 py-2 rounded-2xl text-xs font-bold text-on-surface shadow-sm">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>2. Audit &amp; Verify
+</div>
+<span class="material-symbols-outlined text-outline text-sm hidden sm:inline">chevron_right</span>
+<div class="flex items-center gap-2 bg-surface-container-low px-4 py-2 rounded-2xl text-xs font-bold text-on-surface shadow-sm">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>3. Deploy dApp
+</div>
+<span class="material-symbols-outlined text-outline text-sm hidden sm:inline">chevron_right</span>
+<div class="flex items-center gap-2 bg-primary text-on-primary px-4 py-2 rounded-2xl text-xs font-bold shadow-md">
+<span>4. Mainnet Live</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 2 — Blockchain Project Showcases -->
+<section class="py-24 px-6 lg:px-12 bg-surface-container-low">
+<div class="max-w-7xl mx-auto flex flex-col gap-16">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div>
+<span class="text-xs font-bold uppercase tracking-widest text-primary mb-3 block">High-Impact Showcases</span>
+<h2 class="text-4xl sm:text-5xl font-headline font-extrabold text-on-surface tracking-tight">
+            Engineered Protocols &amp; dApps
+          </h2>
+</div>
+<a class="inline-flex items-center gap-2 text-primary font-bold hover:gap-3 transition-all" data-path="portfolio" href="#">
+<span>View All Case Studies</span>
+<span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</a>
+</div>
+<!-- Asymmetric Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+<!-- Project 1: DeFi Platform (Large span) -->
+<div class="lg:col-span-8 bg-surface-container-lowest rounded-3xl p-8 sm:p-10 shadow-[0_10px_30px_rgba(0,0,0,0.03)] flex flex-col justify-between group hover:scale-[1.01] transition-all">
+<div class="flex flex-col gap-6">
+<div class="flex items-center justify-between">
+<span class="px-4 py-1.5 rounded-full bg-primary-fixed text-on-primary-fixed font-bold text-xs">DeFi Protocol</span>
+<span class="text-sm text-on-surface-variant font-medium">Ethereum &amp; Arbitrum</span>
+</div>
+<h3 class="text-3xl font-headline font-bold text-on-surface group-hover:text-primary transition-colors">Aether Yield Optimizer</h3>
+<p class="text-on-surface-variant text-base leading-relaxed">
+              Automated multi-chain liquidity aggregation protocol securing over $850M in TVL with zero flash-loan vulnerabilities.
+            </p>
+<div class="flex flex-wrap gap-2 pt-2">
+<span class="px-3 py-1 rounded-full bg-surface-container text-on-surface text-xs font-medium">Solidity</span>
+<span class="px-3 py-1 rounded-full bg-surface-container text-on-surface text-xs font-medium">Hardhat</span>
+<span class="px-3 py-1 rounded-full bg-surface-container text-on-surface text-xs font-medium">React</span>
+<span class="px-3 py-1 rounded-full bg-surface-container text-on-surface text-xs font-medium">ethers.js</span>
+</div>
+</div>
+<div class="mt-8 pt-6 border-t border-outline-variant/20 flex items-center justify-between">
+<span class="text-sm font-bold text-on-surface">TVL: $850M+</span>
+<a class="w-12 h-12 rounded-full bg-primary-fixed flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-on-primary transition-all" data-path="portfolio" href="#">
+<span class="material-symbols-outlined text-[20px]">arrow_outward</span>
+</a>
+</div>
+</div>
+<!-- Project 2: NFT Marketplace -->
+<div class="lg:col-span-4 bg-surface-container-lowest rounded-3xl p-8 sm:p-10 shadow-[0_10px_30px_rgba(0,0,0,0.03)] flex flex-col justify-between group hover:scale-[1.01] transition-all">
+<div class="flex flex-col gap-6">
+<div class="flex items-center justify-between">
+<span class="px-4 py-1.5 rounded-full bg-secondary-fixed text-on-secondary-fixed font-bold text-xs">NFT Marketplace</span>
+<span class="text-sm text-on-surface-variant font-medium">Polygon</span>
+</div>
+<h3 class="text-2xl font-headline font-bold text-on-surface group-hover:text-secondary transition-colors">Vortex Art Engine</h3>
+<p class="text-on-surface-variant text-sm leading-relaxed">
+              Zero-gas marketplace protocol utilizing advanced ERC-721A batch minting standards.
+            </p>
+<div class="flex flex-wrap gap-2 pt-2">
+<span class="px-3 py-1 rounded-full bg-surface-container text-on-surface text-xs font-medium">Rust</span>
+<span class="px-3 py-1 rounded-full bg-surface-container text-on-surface text-xs font-medium">IPFS</span>
+</div>
+</div>
+<div class="mt-8 pt-6 border-t border-outline-variant/20 flex items-center justify-between">
+<span class="text-sm font-bold text-on-surface">1.2M Mints</span>
+<a class="w-12 h-12 rounded-full bg-secondary-fixed flex items-center justify-center text-secondary group-hover:bg-secondary group-hover:text-on-secondary transition-all" data-path="portfolio" href="#">
+<span class="material-symbols-outlined text-[20px]">arrow_outward</span>
+</a>
+</div>
+</div>
+<!-- Project 3: Web3 Application -->
+<div class="lg:col-span-4 bg-surface-container-lowest rounded-3xl p-8 sm:p-10 shadow-[0_10px_30px_rgba(0,0,0,0.03)] flex flex-col justify-between group hover:scale-[1.01] transition-all">
+<div class="flex flex-col gap-6">
+<div class="flex items-center justify-between">
+<span class="px-4 py-1.5 rounded-full bg-tertiary-fixed text-on-tertiary-fixed font-bold text-xs">Web3 App</span>
+<span class="text-sm text-on-surface-variant font-medium">Solana</span>
+</div>
+<h3 class="text-2xl font-headline font-bold text-on-surface group-hover:text-tertiary transition-colors">SolPay Gateway</h3>
+<p class="text-on-surface-variant text-sm leading-relaxed">
+              Instant sub-second crypto merchant settlement tool with automated fiat off-ramping.
+            </p>
+<div class="flex flex-wrap gap-2 pt-2">
+<span class="px-3 py-1 rounded-full bg-surface-container text-on-surface text-xs font-medium">Anchor</span>
+<span class="px-3 py-1 rounded-full bg-surface-container text-on-surface text-xs font-medium">TypeScript</span>
+</div>
+</div>
+<div class="mt-8 pt-6 border-t border-outline-variant/20 flex items-center justify-between">
+<span class="text-sm font-bold text-on-surface">500k+ Txns</span>
+<a class="w-12 h-12 rounded-full bg-tertiary-fixed flex items-center justify-center text-tertiary group-hover:bg-tertiary group-hover:text-on-tertiary transition-all" data-path="portfolio" href="#">
+<span class="material-symbols-outlined text-[20px]">arrow_outward</span>
+</a>
+</div>
+</div>
+<!-- Project 4: Enterprise Blockchain (Large span) -->
+<div class="lg:col-span-8 bg-surface-container-lowest rounded-3xl p-8 sm:p-10 shadow-[0_10px_30px_rgba(0,0,0,0.03)] flex flex-col justify-between group hover:scale-[1.01] transition-all">
+<div class="flex flex-col gap-6">
+<div class="flex items-center justify-between">
+<span class="px-4 py-1.5 rounded-full bg-primary-fixed text-on-primary-fixed font-bold text-xs">Enterprise Chain</span>
+<span class="text-sm text-on-surface-variant font-medium">Hyperledger &amp; Ethereum L2</span>
+</div>
+<h3 class="text-3xl font-headline font-bold text-on-surface group-hover:text-primary transition-colors">SupplyChain Trust Ledger</h3>
+<p class="text-on-surface-variant text-base leading-relaxed">
+              Enterprise-grade supply chain tracking system connecting global logistics providers with immutable provenance records.
+            </p>
+<div class="flex flex-wrap gap-2 pt-2">
+<span class="px-3 py-1 rounded-full bg-surface-container text-on-surface text-xs font-medium">Solidity</span>
+<span class="px-3 py-1 rounded-full bg-surface-container text-on-surface text-xs font-medium">Node.js</span>
+<span class="px-3 py-1 rounded-full bg-surface-container text-on-surface text-xs font-medium">GraphQL</span>
+<span class="px-3 py-1 rounded-full bg-surface-container text-on-surface text-xs font-medium">Docker</span>
+</div>
+</div>
+<div class="mt-8 pt-6 border-t border-outline-variant/20 flex items-center justify-between">
+<span class="text-sm font-bold text-on-surface">Fortune 500 Integration</span>
+<a class="w-12 h-12 rounded-full bg-primary-fixed flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-on-primary transition-all" data-path="portfolio" href="#">
+<span class="material-symbols-outlined text-[20px]">arrow_outward</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 3 — Engineering Capabilities -->
+<section class="py-24 px-6 lg:px-12 bg-surface">
+<div class="max-w-7xl mx-auto flex flex-col gap-16">
+<div class="text-center max-w-3xl mx-auto">
+<span class="text-xs font-bold uppercase tracking-widest text-primary mb-3 block">Interconnected Architecture</span>
+<h2 class="text-4xl sm:text-5xl font-headline font-extrabold text-on-surface tracking-tight mb-6">
+          Engineering Capabilities
+        </h2>
+<p class="text-on-surface-variant text-lg">
+          End-to-end technical execution across the entire decentralized stack, built for uncompromising security and performance.
+        </p>
+</div>
+<!-- Capability Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+<!-- 1. Smart Contract Engineering -->
+<div class="bg-surface-container-low rounded-3xl p-8 flex flex-col gap-6 hover:shadow-xl transition-all group">
+<div class="w-14 h-14 rounded-2xl bg-primary-fixed flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-on-primary transition-all">
+<span class="material-symbols-outlined text-[28px]">code</span>
+</div>
+<h3 class="text-2xl font-headline font-bold text-on-surface">Smart Contract Engineering</h3>
+<p class="text-on-surface-variant text-base leading-relaxed">
+            Gas-optimized, formally verified smart contracts in Solidity and Rust designed to withstand sophisticated exploit vectors.
+          </p>
+<ul class="flex flex-col gap-2 mt-auto pt-4 border-t border-outline-variant/20 text-sm text-on-surface font-medium">
+<li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span> Formal Verification</li>
+<li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span> Gas Optimization</li>
+<li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span> Automated Test Suites</li>
+</ul>
+</div>
+<!-- 2. dApp Development -->
+<div class="bg-surface-container-low rounded-3xl p-8 flex flex-col gap-6 hover:shadow-xl transition-all group">
+<div class="w-14 h-14 rounded-2xl bg-secondary-fixed flex items-center justify-center text-secondary group-hover:bg-secondary group-hover:text-on-secondary transition-all">
+<span class="material-symbols-outlined text-[28px]">desktop_windows</span>
+</div>
+<h3 class="text-2xl font-headline font-bold text-on-surface">dApp Development</h3>
+<p class="text-on-surface-variant text-base leading-relaxed">
+            Blazing-fast decentralized frontends with seamless wallet connectivity, real-time event indexing, and intuitive UX.
+          </p>
+<ul class="flex flex-col gap-2 mt-auto pt-4 border-t border-outline-variant/20 text-sm text-on-surface font-medium">
+<li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Multi-Wallet Support</li>
+<li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Subgraph Indexing</li>
+<li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Responsive Web3 UI</li>
+</ul>
+</div>
+<!-- 3. DeFi Solutions -->
+<div class="bg-surface-container-low rounded-3xl p-8 flex flex-col gap-6 hover:shadow-xl transition-all group">
+<div class="w-14 h-14 rounded-2xl bg-tertiary-fixed flex items-center justify-center text-tertiary group-hover:bg-tertiary group-hover:text-on-tertiary transition-all">
+<span class="material-symbols-outlined text-[28px]">trending_up</span>
+</div>
+<h3 class="text-2xl font-headline font-bold text-on-surface">DeFi Solutions</h3>
+<p class="text-on-surface-variant text-base leading-relaxed">
+            Custom AMMs, lending protocols, staking mechanisms, and yield aggregators engineered for maximum capital efficiency.
+          </p>
+<ul class="flex flex-col gap-2 mt-auto pt-4 border-t border-outline-variant/20 text-sm text-on-surface font-medium">
+<li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span> Automated Market Makers</li>
+<li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span> Liquidity Pools</li>
+<li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span> Staking &amp; Rewards</li>
+</ul>
+</div>
+<!-- 4. NFT Platforms -->
+<div class="bg-surface-container-low rounded-3xl p-8 flex flex-col gap-6 hover:shadow-xl transition-all group">
+<div class="w-14 h-14 rounded-2xl bg-primary-fixed flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-on-primary transition-all">
+<span class="material-symbols-outlined text-[28px]">token</span>
+</div>
+<h3 class="text-2xl font-headline font-bold text-on-surface">NFT Platforms</h3>
+<p class="text-on-surface-variant text-base leading-relaxed">
+            Scalable minting contracts, dynamic metadata generators, decentralized storage integration, and robust marketplace engines.
+          </p>
+<ul class="flex flex-col gap-2 mt-auto pt-4 border-t border-outline-variant/20 text-sm text-on-surface font-medium">
+<li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span> ERC-721A / ERC-1155</li>
+<li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span> IPFS / Arweave Storage</li>
+<li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span> Dynamic Metadata</li>
+</ul>
+</div>
+<!-- 5. Blockchain Integrations -->
+<div class="bg-surface-container-low rounded-3xl p-8 flex flex-col gap-6 hover:shadow-xl transition-all group">
+<div class="w-14 h-14 rounded-2xl bg-secondary-fixed flex items-center justify-center text-secondary group-hover:bg-secondary group-hover:text-on-secondary transition-all">
+<span class="material-symbols-outlined text-[28px]">alt_route</span>
+</div>
+<h3 class="text-2xl font-headline font-bold text-on-surface">Blockchain Integrations</h3>
+<p class="text-on-surface-variant text-base leading-relaxed">
+            Cross-chain bridge integration, Oracle setups (Chainlink), and enterprise API layers linking legacy systems to blockchains.
+          </p>
+<ul class="flex flex-col gap-2 mt-auto pt-4 border-t border-outline-variant/20 text-sm text-on-surface font-medium">
+<li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Cross-Chain Bridges</li>
+<li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Chainlink Oracles</li>
+<li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Legacy ERP Sync</li>
+</ul>
+</div>
+<!-- 6. Web3 Infrastructure -->
+<div class="bg-surface-container-low rounded-3xl p-8 flex flex-col gap-6 hover:shadow-xl transition-all group">
+<div class="w-14 h-14 rounded-2xl bg-tertiary-fixed flex items-center justify-center text-tertiary group-hover:bg-tertiary group-hover:text-on-tertiary transition-all">
+<span class="material-symbols-outlined text-[28px]">dns</span>
+</div>
+<h3 class="text-2xl font-headline font-bold text-on-surface">Web3 Infrastructure</h3>
+<p class="text-on-surface-variant text-base leading-relaxed">
+            Dedicated validator nodes, high-availability RPC endpoints, relayer infrastructure, and robust cloud scaling architecture.
+          </p>
+<ul class="flex flex-col gap-2 mt-auto pt-4 border-t border-outline-variant/20 text-sm text-on-surface font-medium">
+<li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span> Dedicated RPC Nodes</li>
+<li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span> Gas Relayer Networks</li>
+<li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span> 99.99% SLA Uptime</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 4 — Technology Ecosystem -->
+<section class="py-24 px-6 lg:px-12 bg-surface-container-low">
+<div class="max-w-7xl mx-auto flex flex-col gap-16 items-center">
+<div class="text-center max-w-3xl">
+<span class="text-xs font-bold uppercase tracking-widest text-primary mb-3 block">Technical Constellation</span>
+<h2 class="text-4xl sm:text-5xl font-headline font-extrabold text-on-surface tracking-tight mb-6">
+          Technology Ecosystem
+        </h2>
+<p class="text-on-surface-variant text-lg">
+          We leverage the industry's most robust protocols, languages, and developer toolchains to build bulletproof decentralized products.
+        </p>
+</div>
+<!-- Tech Constellation Grid -->
+<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 w-full">
+<div class="bg-surface-container-lowest p-6 rounded-2xl flex flex-col items-center justify-center gap-3 shadow-sm hover:scale-105 transition-all">
+<span class="material-symbols-outlined text-primary text-[36px]">diamond</span>
+<span class="font-headline font-bold text-on-surface text-sm">Ethereum</span>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-2xl flex flex-col items-center justify-center gap-3 shadow-sm hover:scale-105 transition-all">
+<span class="material-symbols-outlined text-secondary text-[36px]">change_history</span>
+<span class="font-headline font-bold text-on-surface text-sm">Polygon</span>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-2xl flex flex-col items-center justify-center gap-3 shadow-sm hover:scale-105 transition-all">
+<span class="material-symbols-outlined text-tertiary text-[36px]">bolt</span>
+<span class="font-headline font-bold text-on-surface text-sm">Solana</span>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-2xl flex flex-col items-center justify-center gap-3 shadow-sm hover:scale-105 transition-all">
+<span class="material-symbols-outlined text-primary text-[36px]">code</span>
+<span class="font-headline font-bold text-on-surface text-sm">Solidity</span>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-2xl flex flex-col items-center justify-center gap-3 shadow-sm hover:scale-105 transition-all">
+<span class="material-symbols-outlined text-secondary text-[36px]">settings_suggest</span>
+<span class="font-headline font-bold text-on-surface text-sm">Rust</span>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-2xl flex flex-col items-center justify-center gap-3 shadow-sm hover:scale-105 transition-all">
+<span class="material-symbols-outlined text-tertiary text-[36px]">web</span>
+<span class="font-headline font-bold text-on-surface text-sm">React</span>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-2xl flex flex-col items-center justify-center gap-3 shadow-sm hover:scale-105 transition-all">
+<span class="material-symbols-outlined text-primary text-[36px]">dns</span>
+<span class="font-headline font-bold text-on-surface text-sm">Node.js</span>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-2xl flex flex-col items-center justify-center gap-3 shadow-sm hover:scale-105 transition-all">
+<span class="material-symbols-outlined text-secondary text-[36px]">api</span>
+<span class="font-headline font-bold text-on-surface text-sm">ethers.js</span>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-2xl flex flex-col items-center justify-center gap-3 shadow-sm hover:scale-105 transition-all">
+<span class="material-symbols-outlined text-tertiary text-[36px]">developer_mode</span>
+<span class="font-headline font-bold text-on-surface text-sm">Web3.js</span>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-2xl flex flex-col items-center justify-center gap-3 shadow-sm hover:scale-105 transition-all">
+<span class="material-symbols-outlined text-primary text-[36px]">cloud</span>
+<span class="font-headline font-bold text-on-surface text-sm">IPFS</span>
+</div>
+</div>
+<div class="pt-4">
+<a class="px-8 py-4 rounded-full bg-primary text-on-primary font-bold shadow-[0_4px_16px_rgba(224,64,160,0.2)] hover:scale-105 transition-transform inline-flex items-center gap-2" data-path="technologies" href="#">
+<span>Explore Technologies</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</a>
+</div>
+</div>
+</section>
+<!-- Section 5 — Final Conversion CTA -->
+<section class="py-24 px-6 lg:px-12 bg-surface relative overflow-hidden">
+<div class="max-w-7xl mx-auto bg-surface-container-lowest rounded-3xl p-10 sm:p-16 shadow-[0_20px_60px_rgba(224,64,160,0.08)] relative z-10 flex flex-col lg:flex-row items-center gap-12">
+<div class="flex flex-col gap-6 lg:w-1/2">
+<span class="text-xs font-bold uppercase tracking-widest text-primary">Start Your Build</span>
+<h2 class="text-4xl sm:text-5xl font-headline font-extrabold text-on-surface tracking-tight leading-tight">
+          Have a Blockchain Product to Engineer?
+        </h2>
+<p class="text-on-surface-variant text-lg leading-relaxed">
+          Turn your Web3 concept into a clear technical roadmap with the right architecture, development approach and blockchain technology for your product.
+        </p>
+<div class="pt-4">
+<a class="px-8 py-4 rounded-full bg-primary text-on-primary font-bold shadow-[0_4px_20px_rgba(224,64,160,0.3)] hover:scale-105 transition-all inline-flex items-center gap-3 text-base" data-path="contact" href="#">
+<span>Discuss Your Web3 Project</span>
+<span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- Network Architecture Flow Diagram -->
+<div class="lg:w-1/2 w-full bg-surface-container-low p-8 rounded-2xl flex flex-col gap-6">
+<div class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">Engineering Roadmap Flow</div>
+<div class="flex items-center justify-between gap-2">
+<div class="flex-1 bg-surface-container-lowest p-4 rounded-xl text-center shadow-sm">
+<span class="material-symbols-outlined text-primary text-[24px] mb-1">lightbulb</span>
+<div class="text-xs font-bold text-on-surface">1. Idea</div>
+</div>
+<span class="material-symbols-outlined text-outline">arrow_forward</span>
+<div class="flex-1 bg-surface-container-lowest p-4 rounded-xl text-center shadow-sm">
+<span class="material-symbols-outlined text-secondary text-[24px] mb-1">architecture</span>
+<div class="text-xs font-bold text-on-surface">2. Architecture</div>
+</div>
+<span class="material-symbols-outlined text-outline">arrow_forward</span>
+<div class="flex-1 bg-surface-container-lowest p-4 rounded-xl text-center shadow-sm">
+<span class="material-symbols-outlined text-tertiary text-[24px] mb-1">code</span>
+<div class="text-xs font-bold text-on-surface">3. Contracts</div>
+</div>
+</div>
+<div class="flex items-center justify-between gap-2">
+<div class="flex-1 bg-surface-container-lowest p-4 rounded-xl text-center shadow-sm">
+<span class="material-symbols-outlined text-tertiary text-[24px] mb-1">integration_instructions</span>
+<div class="text-xs font-bold text-on-surface">4. Product</div>
+</div>
+<span class="material-symbols-outlined text-outline">arrow_forward</span>
+<div class="flex-1 bg-primary text-on-primary p-4 rounded-xl text-center shadow-md">
+<span class="material-symbols-outlined text-[24px] mb-1">rocket_launch</span>
+<div class="text-xs font-bold">5. Launch</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+</div></main><footer class="w-full bg-surface-container-low py-16"><div class="max-w-7xl mx-auto px-6 lg:px-12 grid grid-cols-1 md:grid-cols-4 gap-12 mb-12"><div class="flex flex-col gap-4"><div class="flex items-center gap-3"><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[16px]">hub</span></div><span class="font-headline font-bold text-on-surface">CHAINMIND</span></div><p class="text-sm text-on-surface-variant leading-relaxed">Premier Blockchain &amp; Web3 Development Agency building decentralized futures with uncompromised engineering authority.</p></div><div class="flex flex-col gap-3"><span class="font-headline font-bold text-sm text-on-surface uppercase tracking-wider">Navigation</span><a class="text-sm text-on-surface-variant hover:text-on-surface transition-colors" data-path="home-engineering-authority" href="#">Home: Engineering</a><a class="text-sm text-on-surface-variant hover:text-on-surface transition-colors" data-path="home-web3-studio" href="#">Home: Studio</a><a class="text-sm text-on-surface-variant hover:text-on-surface transition-colors" data-path="services" href="#">Services</a><a class="text-sm text-on-surface-variant hover:text-on-surface transition-colors" data-path="portfolio" href="#">Portfolio</a></div><div class="flex flex-col gap-3"><span class="font-headline font-bold text-sm text-on-surface uppercase tracking-wider">Ecosystem</span><a class="text-sm text-on-surface-variant hover:text-on-surface transition-colors" data-path="technologies" href="#">Technologies</a><a class="text-sm text-on-surface-variant hover:text-on-surface transition-colors" data-path="contact" href="#">Contact</a><a class="text-sm text-on-surface-variant hover:text-on-surface transition-colors" href="#">Privacy Policy</a><a class="text-sm text-on-surface-variant hover:text-on-surface transition-colors" href="#">Terms of Service</a></div><div class="flex flex-col gap-4"><span class="font-headline font-bold text-sm text-on-surface uppercase tracking-wider">Connect</span><div class="flex items-center gap-3"><a class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface hover:bg-primary hover:text-on-primary transition-colors" href="#"><span class="material-symbols-outlined text-[18px]">public</span></a><a class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface hover:bg-primary hover:text-on-primary transition-colors" href="#"><span class="material-symbols-outlined text-[18px]">code</span></a><a class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface hover:bg-primary hover:text-on-primary transition-colors" href="#"><span class="material-symbols-outlined text-[18px]">terminal</span></a></div></div></div><div class="max-w-7xl mx-auto px-6 lg:px-12 pt-8 border-t border-outline-variant/20 text-center text-on-surface-variant text-sm">© 2024 ChainMind Labs. All rights reserved.</div></footer>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Light / Dark mode toggle button in header
+      const themeToggle = Array.from(document.querySelectorAll('header button')).find(btn => btn.textContent.includes('light_mode') || btn.textContent.includes('dark_mode'));
+      
+      // Load saved theme from localStorage
+      if (localStorage.getItem('theme') === 'dark') {
+          document.documentElement.classList.add('dark');
+          if (themeToggle) {
+              const icon = themeToggle.querySelector('.material-symbols-outlined');
+              if (icon) icon.textContent = 'light_mode';
+          }
+      }
+
+      if (themeToggle) {
+        themeToggle.addEventListener('click', () => {
+          document.documentElement.classList.toggle('dark');
+          const isDark = document.documentElement.classList.contains('dark');
+          
+          // Save theme to localStorage
+          localStorage.setItem('theme', isDark ? 'dark' : 'light');
+          
+          const icon = themeToggle.querySelector('.material-symbols-outlined');
+          if (icon) {
+            icon.textContent = isDark ? 'light_mode' : 'dark_mode';
+          }
+        });
+      }
+
+      // LTR / RTL toggle button in header
+      if (localStorage.getItem('dir') === 'rtl') {
+          document.documentElement.setAttribute('dir', 'rtl');
+      }
+      const globeToggle = Array.from(document.querySelectorAll('header button')).find(btn => btn.textContent.includes('globe'));
+      if (globeToggle) {
+        globeToggle.addEventListener('click', () => {
+          const currentDir = document.documentElement.getAttribute('dir');
+          const newDir = currentDir === 'rtl' ? 'ltr' : 'rtl';
+          document.documentElement.setAttribute('dir', newDir);
+          localStorage.setItem('dir', newDir);
+        });
+      }
+
+      // Fix links
+      const navLinks = document.querySelectorAll('nav a, footer a[data-path], a[data-path]');
+      navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+          const path = link.getAttribute('data-path');
+          if (path) {
+            e.preventDefault();
+            const routes = {
+              'home-engineering-authority': 'index.html',
+              'home-web3-studio': 'home2.html',
+              'home-web3-product-studio': 'home2.html',
+              'services': 'services.html',
+              'portfolio': 'portfolio.html',
+              'technologies': 'technologies.html',
+              'contact': 'contact.html'
+            };
+            if (routes[path]) {
+                window.location.href = routes[path];
+            }
+          }
+        });
+      });
+    });
+</script>
+
+</body></html>
